@@ -6,11 +6,12 @@
   :license  "Apache 2"
   :version "0.0.1"
   :serial t
-  :depends-on (:clouchdb)
+  :depends-on (:clouchdb :fset)
   :components ((:module "src"
                         :serial t
                         :components ((:file "package")
-                                     (:file "sofamill")))))
+                                     (:file "sofamill")
+                                     (:file "instance-view")))))
 
 ;;; (asdf:load-system :sofamill)
 
