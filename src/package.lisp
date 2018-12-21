@@ -1,4 +1,4 @@
 ;;;; package.lisp
 
 (defpackage #:sofamill
-  (:use #:cl #:clouchdb))
+  (:use #:cl #:clouchdb #:capi))
