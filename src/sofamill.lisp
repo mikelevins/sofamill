@@ -13,7 +13,7 @@
 (defparameter *sofamill* nil)
 
 (defclass sofamill ()
-  ((state :accessor state :initform (fset:wb-map) :initarg :state)))
+  ((state :accessor state :initform (empty-map) :initarg :state)))
 
 (defun sofamill ()
   (or *sofamill*
@@ -31,19 +31,40 @@
         (write y :stream stream))
       (format stream " }"))))
 
-(defmethod update-state ((mill sofamill)(key symbol) val)
-  (setf (state mill)
-        (fset:with (state mill)
+(defun update-state (key val)
+  (setf (state (sofamill))
+        (fset:with (state (sofamill))
                    key val)))
 
-(defmethod get-state ((mill sofamill)(key symbol) &optional (default nil))
-  (let* ((mill-default (fset:map-default (state mill)))
-         (found (fset:@ (state mill) key)))
+(defun get-state (key &optional (default nil))
+  (let* ((mill-default (fset:map-default (state (sofamill))))
+         (found (fset:@ (state (sofamill)) key)))
     (if (equal found mill-default)
         default
         found)))
 
-;;; (set-connection :host "mars.local")
-;;; (set-connection :name "oppsdaily")
-;;; *couchdb*
-;;; (get-all-documents)
+(defun couches ()
+  (get-state :couches))
+
+(defun add-couch (namestring 
+                  &key
+                  (host "localhost")
+                  (port "5984")
+                  (protocol "http")
+                  (dbname nil)
+                  (user nil)
+                  (password nil))
+  (let* ((couch-structure (clouchdb:make-db :host host
+                                            :port port
+                                            :name dbname
+                                            :protocol protocol
+                                            :user user
+                                            :password password))
+         (old-couches (couches))
+         (new-couches (merge-keys old-couches
+                                  (finite-map namestring couch-structure))))
+    (update-state :couches new-couches)))
+
+#|
+(add-couch "mars.local" :host "mars.local")
+|#

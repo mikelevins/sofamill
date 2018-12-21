@@ -10,8 +10,8 @@
   :components ((:module "src"
                         :serial t
                         :components ((:file "package")
+                                     (:file "map-utils")
                                      (:file "sofamill")
                                      (:file "instance-view")))))
 
 ;;; (asdf:load-system :sofamill)
-
