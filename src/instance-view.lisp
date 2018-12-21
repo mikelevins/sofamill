@@ -19,22 +19,23 @@
   ()
   ;; -- panes ---------------------------------------------
   (:panes
-   (name-pane text-input-pane :text (clouchdb:db-name *couchdb*) :external-min-width 256)
-   (name-label-pane title-pane :text "Server name: ")
    (protocol-pane text-input-pane :text (clouchdb:db-protocol *couchdb*))
    (protocol-label-pane title-pane :text "Protocol: ")
    (host-pane text-input-pane :text (clouchdb:db-host *couchdb*))
    (host-label-pane title-pane :text "Hostname: ")
    (port-pane text-input-pane :text (clouchdb:db-port *couchdb*))
    (port-label-pane title-pane :text "Port: ")
+   (dbname-pane text-input-pane :text (clouchdb:db-name *couchdb*) :external-min-width 256)
+   (dbname-label-pane title-pane :text "Database name: ")
    (username-pane text-input-pane :text (clouchdb:db-user *couchdb*))
    (username-label-pane title-pane :text "Username: ")
-   (password-pane text-input-pane :text (clouchdb:db-password *couchdb*))
+   (password-pane password-pane :text (clouchdb:db-password *couchdb*))
    (password-label-pane title-pane :text "Password: "))
   ;; -- layouts ---------------------------------------------
   (:layouts
-   (main-layout grid-layout '(name-label-pane name-pane host-label-pane host-pane
-                                              port-label-pane port-pane username-label-pane username-pane
+   (main-layout grid-layout '(host-label-pane host-pane
+                                              port-label-pane port-pane dbname-label-pane dbname-pane 
+                                              username-label-pane username-pane
                                               password-label-pane password-pane)
                 :columns 2 :x-adjust :right :y-adjust :center))
   ;; -- default ---------------------------------------------
