@@ -66,5 +66,6 @@
     (update-state :couches new-couches)))
 
 #|
-(add-couch "mars.local" :host "mars.local")
+(add-couch "localhost" :host "localhost")
+(add-couch "mars.local" :host "mars.local" :dbname "oppsdaily")
 |#
