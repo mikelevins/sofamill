@@ -33,10 +33,11 @@
    (password-label-pane title-pane :text "Password: "))
   ;; -- layouts ---------------------------------------------
   (:layouts
-   (main-layout grid-layout '(host-label-pane host-pane
-                                              port-label-pane port-pane dbname-label-pane dbname-pane 
-                                              username-label-pane username-pane
-                                              password-label-pane password-pane)
+   (main-layout grid-layout '(protocol-label-pane protocol-pane 
+                                                  host-label-pane host-pane
+                                                  port-label-pane port-pane dbname-label-pane dbname-pane 
+                                                  username-label-pane username-pane
+                                                  password-label-pane password-pane)
                 :columns 2 :x-adjust :right :y-adjust :center))
   ;; -- default ---------------------------------------------
   (:default-initargs :layout 'main-layout
