@@ -15,5 +15,3 @@
 
 ;;; (asdf:load-system :sofamill)
 
-;;; start Lispworks environment:
-;;; (env:start-environment)
