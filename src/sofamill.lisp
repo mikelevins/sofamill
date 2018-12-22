@@ -65,11 +65,21 @@
                                   (finite-map namestring couch-structure))))
     (update-state :couches new-couches)))
 
-(defun get-couch (couch-name)
+(defmethod couchdb-slot-value ((couchdb clouchdb::db)(key string))
+  (slot-value couchdb (intern key :clouchdb)))
+
+(defmethod couchdb-slot-value ((couchdb clouchdb::db)(key symbol))
+  (couchdb-slot-value couchdb (symbol-name key)))
+
+(defun get-couch (couch-name &optional (key nil))
   (let ((couches (get-state :couches)))
     (if couches
-        (get-key couches couch-name)
+        (let ((couch (get-key couches couch-name)))
+          (if key
+              (couchdb-slot-value couch key)
+            couch))
       nil)))
+
 
 #|
 (add-couch "localhost" :host "localhost")
