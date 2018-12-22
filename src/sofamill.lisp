@@ -65,6 +65,12 @@
                                   (finite-map namestring couch-structure))))
     (update-state :couches new-couches)))
 
+(defun get-couch (couch-name)
+  (let ((couches (get-state :couches)))
+    (if couches
+        (get-key couches couch-name)
+      nil)))
+
 #|
 (add-couch "localhost" :host "localhost")
 (add-couch "mars.local" :host "mars.local" :dbname "oppsdaily")
