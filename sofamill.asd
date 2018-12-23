@@ -11,6 +11,7 @@
                         :serial t
                         :components ((:file "package")
                                      (:file "map-utils")
+                                     (:file "couch")
                                      (:file "sofamill")
                                      (:file "couches-pane")
                                      (:file "instance-pane")))))
@@ -22,4 +23,9 @@
 ;;; (sofamill::add-couch "mars.local" :host "mars.local" :dbname "oppsdaily")
 ;;; (sofamill::put-couch-key "mars.local" "NAME" "delectus")
 ;;; (sofamill::put-couch-key "mars.local" :protocol "https")
+
+;;; (sofamill::probe-couch :host "localhost")
+;;; (sofamill::probe-couch :host "mars.local")
+;;; (sofamill::probe-couch :host "db.delect.us" :port "" :dbname "")
+
 ;;; (defparameter $win (capi:contain (make-instance 'sofamill::couches-pane)))
