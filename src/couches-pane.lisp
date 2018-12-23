@@ -20,10 +20,13 @@
                  :column-function (lambda (item)(list item)))
    (add-button push-button :text "Add..." :reader get-add-button
                :visible-max-height 32
+               :external-max-height 32)
+   (remove-button push-button :text "Remove" :reader get-remove-button
+               :visible-max-height 32
                :external-max-height 32))
   ;; -- layouts ---------------------------------------------
   (:layouts
-   (buttons-layout row-layout '(add-button) :reader get-buttons-layout
+   (buttons-layout row-layout '(add-button remove-button) :reader get-buttons-layout
                    :visible-min-height 32)
    (couches-layout simple-layout '(couches-list) 
                    :visible-min-height 96
