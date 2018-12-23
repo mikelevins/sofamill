@@ -13,7 +13,7 @@
 (defparameter *sofamill* nil)
 
 (defclass sofamill ()
-  ((state :accessor state :initform (empty-map) :initarg :state)))
+  ((state :accessor state :initform (finite-map :couches (empty-map)) :initarg :state)))
 
 (defun sofamill ()
   (or *sofamill*
@@ -48,9 +48,7 @@
 
 (defun list-couches ()
   (let ((couches (get-state :couches)))
-    (if couches
-        (map-keys couches)
-      nil)))
+    (map-keys couches)))
 
 (defmethod couchdb-slot-value ((couchdb clouchdb::db)(key string))
   (slot-value couchdb (intern key :clouchdb)))
