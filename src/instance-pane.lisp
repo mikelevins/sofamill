@@ -1,6 +1,6 @@
 ;;;; ***********************************************************************
 ;;;;
-;;;; Name:          instance-view.lisp
+;;;; Name:          instance-pane.lisp
 ;;;; Project:       SofaMill: a CouchDB browser
 ;;;; Purpose:       a UI for contacting and inspecting CouchDB instances
 ;;;; Author:        mikel evins
@@ -14,7 +14,7 @@
 ;;; UI
 ;;; ---------------------------------------------------------------------
 
-(define-interface instance-view ()
+(define-interface instance-pane ()
   ;; -- slots ---------------------------------------------
   ()
   ;; -- panes ---------------------------------------------
@@ -48,4 +48,4 @@
                             (or (clouchdb:db-host *couchdb*)
                                 "CouchDB")))))
 
-;;; (defparameter $win (contain (make-instance 'instance-view)))
+;;; (defparameter $win (contain (make-instance 'instance-pane)))
