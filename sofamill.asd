@@ -12,6 +12,15 @@
                         :components ((:file "package")
                                      (:file "map-utils")
                                      (:file "sofamill")
+                                     (:file "couches-view")
                                      (:file "instance-view")))))
 
 ;;; (asdf:load-system :sofamill)
+
+
+;;; (sofamill::add-couch "localhost" :host "localhost")
+;;; (sofamill::add-couch "mars.local" :host "mars.local" :dbname "oppsdaily")
+;;; (sofamill::put-couch-key "mars.local" "NAME" "delectus")
+;;; (sofamill::put-couch-key "mars.local" :protocol "https")
+;;; (defparameter $win (capi:contain (make-instance 'sofamill::couches-view)))
+

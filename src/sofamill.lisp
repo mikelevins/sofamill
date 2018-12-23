@@ -46,6 +46,9 @@
 (defun couches ()
   (get-state :couches))
 
+(defun list-couches ()
+  (map-keys (get-state :couches)))
+
 (defmethod couchdb-slot-value ((couchdb clouchdb::db)(key string))
   (slot-value couchdb (intern key :clouchdb)))
 
