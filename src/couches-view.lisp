@@ -19,10 +19,21 @@
   ()
   ;; -- panes ---------------------------------------------
   (:panes
-   (couches-pane list-panel :items (list-couches)))
+   (couches-pane list-panel :items (list-couches))
+   (add-button push-button :text "Add..." :reader get-add-button
+               :visible-max-height 32
+               :external-max-height 32)
+   (remove-button push-button :text "Remove" :reader get-remove-button
+                  :visible-max-height 32
+                  :external-max-height 32))
   ;; -- layouts ---------------------------------------------
   (:layouts
-   (main-layout column-layout '(couches-pane)))
+   (buttons-layout row-layout '(add-button remove-button) :reader get-buttons-layout
+                   :visible-min-height 32)
+   (couches-layout simple-layout '(couches-pane) 
+                   :visible-min-height 96)
+   (main-layout column-layout '(buttons-layout couches-layout)
+                :ratios '(nil 1)))
   ;; -- default ---------------------------------------------
   (:default-initargs :layout 'main-layout
    :initial-focus 'main-layout
