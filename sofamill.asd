@@ -12,7 +12,7 @@
                         :components ((:file "package")
                                      (:file "map-utils")
                                      (:file "sofamill")
-                                     (:file "couches-view")
+                                     (:file "couches-pane")
                                      (:file "instance-pane")))))
 
 ;;; (asdf:load-system :sofamill)
