@@ -14,7 +14,7 @@
                     (host "localhost")
                     (port "5984")
                     (protocol "http")
-                    (dbname "default"))
+                    (dbname ""))
   (let* ((couch (clouchdb:make-db :host host
                                   :port port
                                   :name dbname

@@ -26,6 +26,6 @@
 
 ;;; (sofamill::probe-couch :host "localhost")
 ;;; (sofamill::probe-couch :host "mars.local")
-;;; (sofamill::probe-couch :host "db.delect.us" :port "" :dbname "")
+;;; (sofamill::probe-couch :host "db.delect.us" :port "")
 
 ;;; (defparameter $win (capi:contain (make-instance 'sofamill::couches-pane)))
