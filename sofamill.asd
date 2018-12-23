@@ -23,4 +23,3 @@
 ;;; (sofamill::put-couch-key "mars.local" "NAME" "delectus")
 ;;; (sofamill::put-couch-key "mars.local" :protocol "https")
 ;;; (defparameter $win (capi:contain (make-instance 'sofamill::couches-pane)))
-

@@ -47,7 +47,10 @@
   (get-state :couches))
 
 (defun list-couches ()
-  (map-keys (get-state :couches)))
+  (let ((couches (get-state :couches)))
+    (if couches
+        (map-keys couches)
+      nil)))
 
 (defmethod couchdb-slot-value ((couchdb clouchdb::db)(key string))
   (slot-value couchdb (intern key :clouchdb)))
