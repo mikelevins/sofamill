@@ -39,3 +39,5 @@
    :title "CouchDB Instances"
    :create-callback (lambda (intf)
                       )))
+
+;;; (defparameter $win (capi:contain (make-instance 'couches-pane)))

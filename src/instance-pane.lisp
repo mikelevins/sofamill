@@ -19,9 +19,9 @@
   ()
   ;; -- panes ---------------------------------------------
   (:panes
-   (protocol-pane text-input-pane :text *default-protocol*)
+   (protocol-pane text-input-pane :reader get-protocol-pane :text *default-protocol*)
    (protocol-label-pane title-pane :text "Protocol: ")
-   (host-pane text-input-pane :text *default-host*)
+   (host-pane text-input-pane :reader get-host-pane :text *default-host*)
    (host-label-pane title-pane :text "Hostname: ")
    (port-pane text-input-pane :text *default-port*)
    (port-label-pane title-pane :text "Port: ")
@@ -36,12 +36,14 @@
   ;; -- layouts ---------------------------------------------
   (:layouts
    (buttons-layout row-layout '(accept-button cancel-button))
-   (main-layout grid-layout '(protocol-label-pane protocol-pane 
-                                                  host-label-pane host-pane
-                                                  port-label-pane port-pane dbname-label-pane dbname-pane 
-                                                  username-label-pane username-pane
-                                                  password-label-pane password-pane
-                                                  nil buttons-layout)
+   (main-layout grid-layout '(protocol-label-pane 
+                              protocol-pane 
+                              host-label-pane host-pane
+                              port-label-pane port-pane
+                              dbname-label-pane dbname-pane 
+                              username-label-pane username-pane
+                              password-label-pane password-pane
+                              nil buttons-layout)
                 :columns 2 :x-adjust :right :y-adjust :center))
   ;; -- default ---------------------------------------------
   (:default-initargs :layout 'main-layout
@@ -49,6 +51,6 @@
    :title "CouchDB"
    :create-callback (lambda (intf)
                       (setf (interface-title intf) 
-                            *default-host*))))
+                            (text-input-pane-text (get-host-pane intf))))))
 
 ;;; (defparameter $win (contain (make-instance 'instance-pane)))
