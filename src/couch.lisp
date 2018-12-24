@@ -10,6 +10,21 @@
 
 (in-package #:sofamill)
 
+(defparameter *default-host* "localhost")
+(defparameter *default-port* "5984")
+(defparameter *default-protocol* "http")
+(defparameter *default-dbname* "")
+(defparameter *default-user* "")
+(defparameter *default-password* "")
+
+(defun make-default-couch ()
+  (clouchdb:make-db :host *default-host*
+                    :port *default-port*
+                    :name *default-dbname*
+                    :protocol *default-protocol*
+                    :user *default-user*
+                    :password *default-password*))
+
 (defun probe-couch (&key
                     (host "localhost")
                     (port "5984")
