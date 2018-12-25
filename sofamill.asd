@@ -21,8 +21,6 @@
 
 ;;; (sofamill::add-couch "localhost" :host "localhost")
 ;;; (sofamill::add-couch "mars.local" :host "mars.local" :dbname "oppsdaily")
-;;; (sofamill::put-couch-key "mars.local" "NAME" "delectus")
-;;; (sofamill::put-couch-key "mars.local" :protocol "https")
 
 ;;; (sofamill::probe-couch :host "localhost")
 ;;; (sofamill::probe-couch :host "mars.local")

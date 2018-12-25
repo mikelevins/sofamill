@@ -17,30 +17,32 @@
 (defparameter *default-user* "")
 (defparameter *default-password* "")
 
+(defmacro with-couch ((&rest args &key (db *couchdb*)
+                             name port protocol host user password
+                             document-update-fn document-fetch-fn)
+                      &body body)
+  (declare (ignore host port name protocol user password document-update-fn
+                   document-fetch-fn db))
+  `(let ((*couchdb* (make-db ,@args)))
+     (progn ,@body)))
+
 (defun make-default-couch ()
-  (clouchdb:make-db :host *default-host*
-                    :port *default-port*
-                    :name *default-dbname*
-                    :protocol *default-protocol*
-                    :user *default-user*
-                    :password *default-password*))
+  (finite-map :host *default-host*
+              :port *default-port*
+              :name *default-dbname*
+              :protocol *default-protocol*
+              :user *default-user*
+              :password *default-password*))
 
 (defun probe-couch (&key
                     (host "localhost")
                     (port "5984")
                     (protocol "http")
-                    (dbname ""))
-  (let* ((couch (clouchdb:make-db :host host
-                                  :port port
-                                  :name dbname
-                                  :protocol protocol)))
-    (handler-case (get-couchdb-info :db couch) 
+                    (db-name ""))
+  (with-couch (:host host
+               :port port
+               :name db-name
+               :protocol protocol)
+    (handler-case (get-couchdb-info) 
       (simple-error (err)
         nil))))
-
-(defmethod couchdb-slot-value ((couchdb clouchdb::db)(key string))
-  (slot-value couchdb (intern key :clouchdb)))
-
-(defmethod couchdb-slot-value ((couchdb clouchdb::db)(key symbol))
-  (couchdb-slot-value couchdb (symbol-name key)))
-

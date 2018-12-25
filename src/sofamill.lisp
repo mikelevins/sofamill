@@ -96,12 +96,12 @@
                   (dbname nil)
                   (user nil)
                   (password nil))
-  (let* ((new-couch (clouchdb:make-db :host host
-                                      :port port
-                                      :name dbname
-                                      :protocol protocol
-                                      :user user
-                                      :password password)))
+  (let* ((new-couch (finite-map :host host
+                                :port port
+                                :name dbname
+                                :protocol protocol
+                                :user user
+                                :password password)))
     (update-couch namestring new-couch)))
 
 #|
