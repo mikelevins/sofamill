@@ -8,12 +8,16 @@
 ;;;;
 ;;;; ***********************************************************************
 
-(in-package #:sofamill)
+(in-package :sofamill)
 
 (defparameter *sofamill* nil)
 
+(defparameter *initial-state*
+  (finite-map
+   :couches (empty-map)))
+
 (defclass sofamill ()
-  ((state :accessor state :initform (finite-map :couches (empty-map)) :initarg :state)))
+  ((state :accessor state :initform *initial-state* :initarg :state)))
 
 (defun sofamill ()
   (or *sofamill*
@@ -31,11 +35,6 @@
         (write y :stream stream))
       (format stream " }"))))
 
-(defun update-state (key val)
-  (setf (state (sofamill))
-        (fset:with (state (sofamill))
-                   key val)))
-
 (defmethod get-state ((key symbol) &optional (default nil))
   (let* ((mill-default (fset:map-default (state (sofamill))))
          (found (fset:@ (state (sofamill)) key)))
@@ -43,8 +42,14 @@
         default
       found)))
 
-(defun couches ()
-  (get-state :couches))
+(defmethod update-state ((key symbol) val)
+  (let* ((old-state (state (sofamill)))
+         (new-state (merge-keys old-state
+                                (finite-map key val))))
+    (setf (state (sofamill))
+          new-state)))
+
+(defun couches ()(get-state :couches))
 
 (defun list-couches ()
   (let ((couches (get-state :couches)))
@@ -104,4 +109,5 @@
 (add-couch "mars.local" :host "mars.local" :dbname "oppsdaily")
 (put-couch-key "mars.local" "NAME" "delectus")
 (put-couch-key "mars.local" :protocol "https")
+(setf $edwin (editor::current-window))
 |#
