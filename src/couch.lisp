@@ -38,4 +38,9 @@
       (simple-error (err)
         nil))))
 
+(defmethod couchdb-slot-value ((couchdb clouchdb::db)(key string))
+  (slot-value couchdb (intern key :clouchdb)))
+
+(defmethod couchdb-slot-value ((couchdb clouchdb::db)(key symbol))
+  (couchdb-slot-value couchdb (symbol-name key)))
 
