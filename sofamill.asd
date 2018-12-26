@@ -19,11 +19,11 @@
 ;;; (asdf:load-system :sofamill)
 
 
-;;; (sofamill::update-couch "localhost" (sofamill::couch :host "localhost"))
-;;; (sofamill::update-couch "mars.local" (sofamill::couch :host "mars.local" :db-name "oppsdaily"))
+;;; (sofamill::put-couch "localhost" (sofamill::couch :host "localhost"))
+;;; (sofamill::put-couch "mars.local" (sofamill::couch :host "mars.local" :db-name "oppsdaily"))
 
-;;; (sofamill::put-couch "mars.local" :name "reddit_corpus")
-;;; (sofamill::put-couch "mars.local" :protocol "https")
+;;; (sofamill::update-couch "mars.local" :name "reddit_corpus")
+;;; (sofamill::update-couch "mars.local" :protocol "https")
 
 ;;; (sofamill::probe-couch (sofamill::couch :host "localhost"))
 ;;; (sofamill::probe-couch (sofamill::couch :host "mars.local"))

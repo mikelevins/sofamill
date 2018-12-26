@@ -58,18 +58,18 @@
             nil))
       nil)))
 
-(defun update-couch (namestring new-couch)
+(defun put-couch (namestring new-couch)
   (let* ((old-couches (couches))
          (new-couches (merge-keys old-couches
                                   (finite-map namestring new-couch))))
     (update-state :couches new-couches)))
 
-(defmethod put-couch (namestring key val)
+(defmethod update-couch (namestring key val)
   (let* ((old-couch (get-couch namestring))
          (new-couch (if old-couch
                         (put-key old-couch key val)
                       (couch key val))))
-    (update-couch namestring new-couch)))
+    (put-couch namestring new-couch)))
 
 #|
 (add-couch "localhost" :host "localhost")
