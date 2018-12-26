@@ -64,10 +64,11 @@
                                   (finite-map namestring new-couch))))
     (update-state :couches new-couches)))
 
-(defmethod put-couch (namestring (new-couch fset:wb-map) &optional (key nil) (val nil))
-  (let* ((new-couch (if key
-                        (put-key new-couch key val)
-                      new-couch)))
+(defmethod put-couch (namestring key val)
+  (let* ((old-couch (get-couch namestring))
+         (new-couch (if old-couch
+                        (put-key old-couch key val)
+                      (couch key val))))
     (update-couch namestring new-couch)))
 
 #|
