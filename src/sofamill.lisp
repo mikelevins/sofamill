@@ -73,5 +73,5 @@
 
 #|
 (add-couch "localhost" :host "localhost")
-(add-couch "mars.local" :host "mars.local" :dbname "oppsdaily")
+(add-couch "mars.local" :host "mars.local" :db-name "oppsdaily")
 |#

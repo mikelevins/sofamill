@@ -13,7 +13,7 @@
 (defparameter *default-host* "localhost")
 (defparameter *default-port* "5984")
 (defparameter *default-protocol* "http")
-(defparameter *default-dbname* "")
+(defparameter *default-db-name* "")
 (defparameter *default-user* "")
 (defparameter *default-password* "")
 
@@ -29,7 +29,7 @@
 (defun couch (&key
               (host *default-host*)
               (port *default-port*)
-              (db-name *default-dbname*)
+              (db-name *default-db-name*)
               (protocol *default-protocol*)
               (user *default-user*)
               (password *default-password*))
@@ -43,7 +43,7 @@
 (defun make-default-couch ()
   (finite-map :host *default-host*
               :port *default-port*
-              :name *default-dbname*
+              :name *default-db-name*
               :protocol *default-protocol*
               :user *default-user*
               :password *default-password*))
