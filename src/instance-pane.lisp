@@ -25,12 +25,6 @@
    (port-label-pane title-pane :text "Port: ")
    (protocol-pane text-input-pane :reader get-protocol-pane :text *default-protocol*)
    (protocol-label-pane title-pane :text "Protocol: ")
-   (db-name-pane text-input-pane :reader get-db-name-pane :text *default-db-name* :external-min-width 256)
-   (db-name-label-pane title-pane :text "Database name: ")
-   (username-pane text-input-pane :reader get-username-pane :text *default-user*)
-   (username-label-pane title-pane :text "Username: ")
-   (password-pane password-pane :reader get-password-pane :text *default-password*)
-   (password-label-pane title-pane :text "Password: ")
    (accept-button push-button :text "Okay" :external-min-height 32)
    (cancel-button push-button :text "Cancel" :external-min-height 32))
   ;; -- layouts ---------------------------------------------
@@ -40,9 +34,6 @@
                               protocol-pane 
                               host-label-pane host-pane
                               port-label-pane port-pane
-                              db-name-label-pane db-name-pane 
-                              username-label-pane username-pane
-                              password-label-pane password-pane
                               nil buttons-layout)
                 :columns 2 :x-adjust :right :y-adjust :center))
   ;; -- default ---------------------------------------------
@@ -57,15 +48,11 @@
                                   (host (get-key couch-instance :host))
                                   (port (get-key couch-instance :port))
                                   (protocol (get-key couch-instance :protocol))
-                                  (db-name (get-key couch-instance :name))
-                                  (username (get-key couch-instance :user))
-                                  (password (get-key couch-instance :password)))
+                                  (db-name (get-key couch-instance :name)))
                               (setf (interface-title intf) title
                                     (text-input-pane-text (get-host-pane intf)) host
                                     (text-input-pane-text (get-port-pane intf)) port
-                                    (text-input-pane-text (get-protocol-pane intf)) protocol
-                                    (text-input-pane-text (get-db-name-pane intf)) db-name
-                                    (text-input-pane-text (get-username-pane intf)) username))
+                                    (text-input-pane-text (get-protocol-pane intf)) protocol))
                           (setf (interface-title intf)
                                 (text-input-pane-text (get-host-pane intf))))))))
 
