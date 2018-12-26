@@ -24,16 +24,8 @@
       (setf *sofamill* (make-instance 'sofamill))))
 
 (defmethod print-object ((mill sofamill)(stream stream))
-  (let ((state (state mill)))
-    (pprint-logical-block (stream nil :prefix "#<sofamill> {")
-      (fset:do-map (x y state)
-        (pprint-pop)
-        (write-char #\Space stream)
-        (pprint-newline :linear stream)
-        (write x :stream stream)
-        (write-char #\Space stream)
-        (write y :stream stream))
-      (format stream " }"))))
+  (print-unreadable-object (mill stream :type t :identity t)
+    (print-object (state mill) stream)))
 
 (defmethod get-state ((key symbol) &optional (default nil))
   (let* ((mill-default (fset:map-default (state (sofamill))))
@@ -59,9 +51,11 @@
   (let ((couches (get-state :couches)))
     (if couches
         (let ((couch (get-key couches couch-name)))
-          (if key
-              (couchdb-slot-value couch key)
-            couch))
+          (if couch
+              (if key
+                  (couchdb-slot-value couch key)
+                couch)
+            nil))
       nil)))
 
 (defun update-couch (namestring new-couch)
@@ -70,44 +64,13 @@
                                   (finite-map namestring new-couch))))
     (update-state :couches new-couches)))
 
-(defmethod put-couch-key ((namestring string) (slot-name string) new-value)
-  (let ((old-couch (get-couch namestring)))
-    (if old-couch
-        (let ((new-couch (clouchdb:make-db :host (db-host old-couch)
-                                           :port (db-port old-couch)
-                                           :name (db-name old-couch)
-                                           :protocol (db-protocol old-couch)
-                                           :user (db-user old-couch)
-                                           :password (db-password old-couch)))
-              (slot-symbol (intern slot-name :clouchdb)))
-          (setf (slot-value new-couch slot-symbol)
-                new-value)
-          (update-couch namestring new-couch))
-      (error "No such CouchDB instance: ~S" namestring))))
-
-(defmethod put-couch-key ((namestring string) (slot-name symbol) new-value)
-  (put-couch-key namestring (symbol-name slot-name) new-value))
-
-(defun add-couch (namestring 
-                  &key
-                  (host "localhost")
-                  (port "5984")
-                  (protocol "http")
-                  (dbname nil)
-                  (user nil)
-                  (password nil))
-  (let* ((new-couch (finite-map :host host
-                                :port port
-                                :name dbname
-                                :protocol protocol
-                                :user user
-                                :password password)))
+(defmethod put-couch (namestring (new-couch fset:wb-map) &optional (key nil) (val nil))
+  (let* ((new-couch (if key
+                        (put-key new-couch key val)
+                      new-couch)))
     (update-couch namestring new-couch)))
 
 #|
 (add-couch "localhost" :host "localhost")
 (add-couch "mars.local" :host "mars.local" :dbname "oppsdaily")
-(put-couch-key "mars.local" "NAME" "delectus")
-(put-couch-key "mars.local" :protocol "https")
-(setf $edwin (editor::current-window))
 |#

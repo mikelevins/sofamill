@@ -26,6 +26,20 @@
   `(let ((*couchdb* (make-db ,@args)))
      (progn ,@body)))
 
+(defun couch (&key
+              (host *default-host*)
+              (port *default-port*)
+              (db-name *default-dbname*)
+              (protocol *default-protocol*)
+              (user *default-user*)
+              (password *default-password*))
+  (finite-map :host host
+              :port port
+              :name db-name
+              :protocol protocol
+              :user user
+              :password password))
+
 (defun make-default-couch ()
   (finite-map :host *default-host*
               :port *default-port*
@@ -34,15 +48,13 @@
               :user *default-user*
               :password *default-password*))
 
-(defun probe-couch (&key
-                    (host "localhost")
-                    (port "5984")
-                    (protocol "http")
-                    (db-name ""))
-  (with-couch (:host host
-               :port port
-               :name db-name
-               :protocol protocol)
-    (handler-case (get-couchdb-info) 
-      (simple-error (err)
-        nil))))
+(defun probe-couch (couch)
+  (let ((host (get-key couch :host))
+        (port (get-key couch :port))
+        (name (get-key couch :name))
+        (protocol (get-key couch :protocol)))
+    (with-couch (:host host :port port
+                 :name name :protocol protocol)
+      (handler-case (get-couchdb-info) 
+        (simple-error (err)
+          nil)))))

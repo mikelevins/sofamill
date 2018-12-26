@@ -19,10 +19,10 @@
 ;;; (asdf:load-system :sofamill)
 
 
-;;; (sofamill::add-couch "localhost" :host "localhost")
-;;; (sofamill::add-couch "mars.local" :host "mars.local" :dbname "oppsdaily")
+;;; (sofamill::put-couch "localhost" (sofamill::couch :host "localhost"))
+;;; (sofamill::put-couch "mars.local" (sofamill::couch :host "mars.local" :db-name "oppsdaily"))
 
-;;; (sofamill::probe-couch :host "localhost")
-;;; (sofamill::probe-couch :host "mars.local")
-;;; (sofamill::probe-couch :host "db.delect.us" :port "")
+;;; (sofamill::probe-couch (sofamill::couch :host "localhost"))
+;;; (sofamill::probe-couch (sofamill::couch :host "mars.local"))
+;;; (sofamill::probe-couch (sofamill::couch :host "db.delect.us" :port ""))
 

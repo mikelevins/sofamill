@@ -16,8 +16,7 @@
 (defmethod contains-value? ((m fset:map) value &key &allow-other-keys)
   (fset:range-contains? m value))
 
-(defun empty-map (&rest args)
-  (fset:empty-map))
+(defun empty-map () (fset:empty-map))
 
 (defun finite-map (&rest args)
   (fset:convert 'fset:wb-map
