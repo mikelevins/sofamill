@@ -10,6 +10,7 @@
   :components ((:module "src"
                         :serial t
                         :components ((:file "package")
+                                     (:file "string-utils")
                                      (:file "map-utils")
                                      (:file "couch")
                                      (:file "sofamill")

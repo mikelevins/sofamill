@@ -70,8 +70,19 @@
         (simple-error (err)
           nil)))))
 
-;;; (sofamill::put-couch "mars.local" (sofamill::couch :host "mars.local" :db-name "oppsdaily"))
+;;; (sofamill::put-couch "mars.local" (sofamill::couch :host "mars.local"))
 ;;; (sofamill::list-databases (sofamill::get-couch "mars.local"))
 
 ;;; (sofamill::put-couch "db.delect.us" (sofamill::couch :host "db.delect.us" :port ""))
 ;;; (sofamill::list-databases (sofamill::get-couch "db.delect.us"))
+
+(defmethod decode-userdb-name ((userdb-string string))
+  (assert (prefix-match? "userdb-" userdb-string)()
+    "Not a userdb name: ~S" userdb-string)
+  (let* ((numstr (subseq userdb-string (length "userdb-")))
+         (char-strings (take-by 2 numstr))
+         (char-codes (mapcar (lambda (cs)(parse-integer cs :radix 16))
+                             char-strings))
+         (chars (mapcar (lambda (cc)(code-char cc))
+                        char-codes)))
+    (coerce chars 'string)))
