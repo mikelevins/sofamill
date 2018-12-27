@@ -47,16 +47,16 @@
   (let ((couches (get-state :couches)))
     (map-keys couches)))
 
-(defun get-couch (couch-name &optional (key nil))
+(defun get-couch (couch-name &optional (key nil)(default nil))
   (let ((couches (get-state :couches)))
     (if couches
-        (let ((couch (get-key couches couch-name)))
+        (let ((couch (get-key couches couch-name :default nil)))
           (if couch
               (if key
-                  (couchdb-slot-value couch key)
+                  (get-key couch key :default default)
                 couch)
-            nil))
-      nil)))
+            default))
+      default)))
 
 (defun put-couch (namestring new-couch)
   (let* ((old-couches (couches))
