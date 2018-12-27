@@ -121,3 +121,21 @@
   (let* ((records (get-document-list couch dbname :skip skip :limit limit))
          (rows (alist-get-key records :|rows|)))
     (alist-vals (mapcar #'car rows))))
+
+;;; get-document (id &key revision revisions conflicts
+;;;                       revision-info (if-missing nil if-missing-p))
+
+(defun get-document-contents (couch dbname document-id
+                                    &key revision revisions conflicts
+                                    revision-info (if-missing nil))
+  (let ((host (get-key couch :host))
+        (port (get-key couch :port))
+        (protocol (get-key couch :protocol)))
+    (with-couch (:host host :port port
+                 :protocol protocol
+                 :name dbname)
+      (clouchdb::get-document document-id))))
+
+;;; (sofamill::put-couch "mars.local" (sofamill::couch :host "mars.local" :db-name "oppsdaily"))
+;;; (sofamill::list-document-ids (get-couch "mars.local") "oppsdaily" :skip 20 :limit 10)
+;;; (sofamill::get-document-contents (get-couch "mars.local") "oppsdaily" "b449e4da4e28616d4f59f5d5be2123ea")
