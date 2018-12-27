@@ -76,13 +76,41 @@
 ;;; (sofamill::put-couch "db.delect.us" (sofamill::couch :host "db.delect.us" :port ""))
 ;;; (sofamill::list-databases (sofamill::get-couch "db.delect.us"))
 
-(defmethod decode-userdb-name ((userdb-string string))
-  (assert (prefix-match? "userdb-" userdb-string)()
-    "Not a userdb name: ~S" userdb-string)
-  (let* ((numstr (subseq userdb-string (length "userdb-")))
-         (char-strings (take-by 2 numstr))
-         (char-codes (mapcar (lambda (cs)(parse-integer cs :radix 16))
-                             char-strings))
-         (chars (mapcar (lambda (cc)(code-char cc))
-                        char-codes)))
-    (coerce chars 'string)))
+(defmethod userdb-name-string? ((s string))
+  (prefix-match? "userdb-" s))
+
+(defmethod decode-userdb-name ((dbstring string))
+  (if (userdb-name-string? dbstring)
+      (let* ((numstr (subseq dbstring (length "userdb-")))
+             (char-strings (take-by 2 numstr))
+             (char-codes (mapcar (lambda (cs)(parse-integer cs :radix 16))
+                                 char-strings))
+             (chars (mapcar (lambda (cc)(code-char cc))
+                            char-codes)))
+        (coerce chars 'string))
+    ;; not a userdb name string
+    nil))
+
+;;; CouchDB returns data in the following format:
+;;; (<total_rows> <offset> <rows>)
+;;; where:
+;;;   <total_rows> is (:|total_rows| . <an integer>)
+;;;   <offset> is (:|offset| . <an integer>)
+;;;   <rows> is (:|rows| <row>*)
+;;;   where: 
+;;;     <row> is ((:|id| . <id-string>) (:|key| . <key-string>) (:|value| <document-data>))
+;;;     where:
+;;;       <document-data> is (:|rev| . <revision-string>), but if we call Couch with the
+;;;                          :include-documents arg true then we'll get the full document contents
+;;;                          in the value, as well
+
+(defun list-documents (couch dbname)
+  (let ((host (get-key couch :host))
+        (port (get-key couch :port))
+        (protocol (get-key couch :protocol)))
+    (with-couch (:host host :port port
+                 :name dbname :protocol protocol)
+      (handler-case (clouchdb::get-all-documents)
+        (simple-error (err)
+          (warn "Error listing documents: ~S" err)
+          nil)))))
