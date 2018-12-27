@@ -17,7 +17,7 @@
 (defparameter *default-user* "")
 (defparameter *default-password* "")
 
-(defmacro with-couch ((&rest args &key (db *couchdb*)
+(defmacro with-couch ((&rest args &key
                              name port protocol host user password
                              document-update-fn document-fetch-fn)
                       &body body)
@@ -40,13 +40,7 @@
               :user user
               :password password))
 
-(defun make-default-couch ()
-  (finite-map :host *default-host*
-              :port *default-port*
-              :name *default-db-name*
-              :protocol *default-protocol*
-              :user *default-user*
-              :password *default-password*))
+(defun make-default-couch () (couch))
 
 (defun probe-couch (couch)
   (let ((host (get-key couch :host))
