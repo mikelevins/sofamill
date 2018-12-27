@@ -40,4 +40,7 @@
    :create-callback (lambda (intf)
                       )))
 
+;;; (put-couch "localhost" (couch :host "localhost"))
+;;; (put-couch "mars.local" (couch :host "mars.local"))
+;;; (put-couch "db.delect.us" (couch :host "db.delect.us" :port ""))
 ;;; (defparameter $win (capi:contain (make-instance 'couches-pane)))

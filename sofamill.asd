@@ -17,6 +17,7 @@
                                      (:file "sofamill")
                                      (:file "couches-pane")
                                      (:file "instance-pane")
+                                     (:file "databases-pane")
                                      (:file "documents-pane")))))
 
 ;;; (asdf:load-system :sofamill)
