@@ -16,12 +16,13 @@
   ;; -- panes ---------------------------------------------
   (:panes
    (ids-pane list-panel :reader get-ids-pane
-             :items nil)
+             :items nil :visible-min-width 280)
    (contents-pane editor-pane :reader get-contents-pane
                   :text "<placeholder text>"))
   ;; -- layouts ---------------------------------------------
   (:layouts
-   (main-layout row-layout '(ids-pane contents-pane)))
+   (main-layout row-layout '(ids-pane contents-pane)
+                :ratios '(nil 1)))
   ;; -- default ---------------------------------------------
   (:default-initargs :layout 'main-layout
     :initial-focus 'main-layout
