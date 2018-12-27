@@ -113,3 +113,11 @@
 ;;; (sofamill::put-couch "mars.local" (sofamill::couch :host "mars.local" :db-name "oppsdaily"))
 ;;; (sofamill::get-document-list (get-couch "mars.local") "oppsdaily")
 ;;; (sofamill::get-document-list (get-couch "mars.local") "oppsdaily" :skip 20 :limit 10)
+
+;;; list-document-ids
+;;; returns a list of document IDs
+
+(defun list-document-ids (couch dbname &key (skip 0)(limit nil))
+  (let* ((records (get-document-list couch dbname :skip skip :limit limit))
+         (rows (alist-get-key records :|rows|)))
+    (alist-vals (mapcar #'car rows))))
