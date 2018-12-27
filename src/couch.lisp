@@ -58,3 +58,20 @@
       (handler-case (get-couchdb-info) 
         (simple-error (err)
           nil)))))
+
+(defun list-databases (couch)
+  (let ((host (get-key couch :host))
+        (port (get-key couch :port))
+        (name (get-key couch :name))
+        (protocol (get-key couch :protocol)))
+    (with-couch (:host host :port port
+                 :name name :protocol protocol)
+      (handler-case (clouchdb::db-request "_all_dbs" :method :get)
+        (simple-error (err)
+          nil)))))
+
+;;; (sofamill::put-couch "mars.local" (sofamill::couch :host "mars.local" :db-name "oppsdaily"))
+;;; (sofamill::list-databases (sofamill::get-couch "mars.local"))
+
+;;; (sofamill::put-couch "db.delect.us" (sofamill::couch :host "db.delect.us" :port ""))
+;;; (sofamill::list-databases (sofamill::get-couch "db.delect.us"))
