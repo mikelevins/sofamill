@@ -91,7 +91,8 @@
     ;; not a userdb name string
     nil))
 
-;;; CouchDB returns data in the following format:
+;;; list-documents
+;;; clouchdb::get-all-documents returns data in the following format:
 ;;; (<total_rows> <offset> <rows>)
 ;;; where:
 ;;;   <total_rows> is (:|total_rows| . <an integer>)
