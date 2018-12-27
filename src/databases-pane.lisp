@@ -16,7 +16,7 @@
   ;; -- panes ---------------------------------------------
   (:panes
    (databases-pane list-panel :reader get-databases-pane
-                   :items nil :visible-min-width 280))
+                   :items nil :visible-min-width 256 :visible-min-height 128))
   ;; -- layouts ---------------------------------------------
   (:layouts
    (main-layout row-layout '(databases-pane)))
