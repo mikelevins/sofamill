@@ -91,7 +91,7 @@
     ;; not a userdb name string
     nil))
 
-;;; list-documents
+;;; get-document-list
 ;;; clouchdb::get-all-documents returns data in the following format:
 ;;; (<total_rows> <offset> <rows>)
 ;;; where:
@@ -105,13 +105,17 @@
 ;;;                          :include-documents arg true then we'll get the full document contents
 ;;;                          in the value, as well
 
-(defun list-documents (couch dbname)
+(defun get-document-list (couch dbname &key (skip 0)(limit nil))
   (let ((host (get-key couch :host))
         (port (get-key couch :port))
         (protocol (get-key couch :protocol)))
     (with-couch (:host host :port port
                  :name dbname :protocol protocol)
-      (handler-case (clouchdb::get-all-documents)
+      (handler-case (clouchdb::get-all-documents :skip skip :limit limit)
         (simple-error (err)
-          (warn "Error listing documents: ~S" err)
+          (warn "Error getting document list: ~S" err)
           nil)))))
+
+;;; (sofamill::put-couch "mars.local" (sofamill::couch :host "mars.local" :db-name "oppsdaily"))
+;;; (sofamill::get-document-list (get-couch "mars.local") "oppsdaily")
+;;; (sofamill::get-document-list (get-couch "mars.local") "oppsdaily" :skip 20 :limit 10)

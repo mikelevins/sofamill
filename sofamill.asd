@@ -11,6 +11,7 @@
                         :serial t
                         :components ((:file "package")
                                      (:file "string-utils")
+                                     (:file "list-utils")
                                      (:file "map-utils")
                                      (:file "couch")
                                      (:file "sofamill")
