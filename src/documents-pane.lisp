@@ -26,13 +26,13 @@
              :visible-min-height 200
              :callback-type :interface-item
              :interaction :single-selection
-             :selection-callback 'handle-select-document-id)
-   (contents-pane editor-pane :text "" :reader get-contents-pane
-                  :buffer-name "SofaMill Document Contents"))
+             :selection-callback 'handle-select-document-id))
   ;; -- layouts ---------------------------------------------
   (:layouts
    (contents-layout grid-layout '() :reader get-contents-layout :columns 2
-                    :background :white)
+                    :background :white
+                    :horizontal-scroll t
+                    :vertical-scroll t)
    (main-layout row-layout '(ids-pane contents-layout)
                 :ratios '(nil 1)))
   ;; -- default ---------------------------------------------
@@ -80,26 +80,10 @@
   (update-contents-layout interface item))
 
 (defun update-contents-layout (intf selected-item)
-  (let* ((item (choice-selected-item (get-ids-pane intf)))
-         (contents (alist->plist (get-document-contents (get-couch (get-instance-url intf))
+  (let* ((contents (alist->plist (get-document-contents (get-couch (get-instance-url intf))
                                                         (get-database-name intf)
                                                         selected-item)))
          (contents-panes (mapcar 'make-data-pane contents)))
     (setf (layout-description (get-contents-layout intf))
           contents-panes)))
 
-
-#| create-callback
-(let ((item (choice-selected-item (get-ids-pane intf))))
-                        (setf (layout-description (get-contents-layout intf))
-                              (get-document-contents (get-couch (get-instance-url intf))
-                                                     (get-database-name intf)
-                                                     item)))
-|#
-
-#| handle-select-document-id
-(setf (layout-description (get-contents-layout interface))
-        (get-document-contents (get-couch (get-instance-url interface))
-                               (get-database-name interface)
-                               item))
-|#

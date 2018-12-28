@@ -10,6 +10,9 @@
 
 (in-package #:sofamill)
 
+(defmethod code-vector->string ((v vector))
+  (coerce (map 'vector #'code-char v) 
+          'string))
 
 (defmethod prefix-match? ((prefix string)(s string))
   (let ((prefix-length (length prefix))

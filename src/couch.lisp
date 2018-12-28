@@ -122,8 +122,14 @@
          (rows (alist-get-key records :|rows|)))
     (alist-vals (mapcar #'car rows))))
 
-;;; get-document (id &key revision revisions conflicts
-;;;                       revision-info (if-missing nil if-missing-p))
+;;; BUG: when clouchdb::get-document fetches a document that contains
+;;;      a German eszett (unicode #x00DF), it returns it as unicode
+;;;      #x009F, which is a control character. I see the same thing if
+;;;      I bypass clouchdb and fetch the same document by calling
+;;;      drakma's http-request directly, then convert the returned
+;;;      vector of bytes to characters by mapping code-char over them.
+;;;      Presumably there is some encoding-related issue that arises
+;;;      from the encoding that drakma assumes or requests.
 
 (defun get-document-contents (couch dbname document-id
                                     &key revision revisions conflicts
