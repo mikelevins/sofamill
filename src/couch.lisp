@@ -23,7 +23,7 @@
                       &body body)
   (declare (ignore host port name protocol user password document-update-fn
                    document-fetch-fn db))
-  `(let ((*couchdb* (clouchdb::make-db ,@args)))
+  `(let ((clouchdb::*couchdb* (clouchdb::make-db ,@args)))
      (progn ,@body)))
 
 (defun couch (&key
