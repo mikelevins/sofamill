@@ -6,7 +6,7 @@
   :license  "Apache 2"
   :version "0.0.1"
   :serial t
-  :depends-on (:clouchdb :fset)
+  :depends-on (:clouchdb :fset :yason)
   :components ((:module "src"
                         :serial t
                         :components ((:file "package")

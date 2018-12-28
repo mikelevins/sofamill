@@ -46,8 +46,15 @@
                                               (choice-selected-item (get-ids-pane intf))))))
 
 ;;; (put-couch "mars.local" (couch :host "mars.local"))
-;;; (defparameter $docids (list-document-ids (get-couch "mars.local") "reddit_corpus" :skip (random 1000000) :limit 20))
-;;; (defparameter $win (capi:contain (make-instance 'documents-pane :document-ids $docids :database-name "reddit_corpus" :instance-url "mars.local")))
+;;; (defparameter $couch (get-couch "mars.local"))
+;;; (defparameter $docids (list-document-ids $couch "reddit_corpus" :skip 1000 :limit 40))
+;;; (defparameter $win (capi:contain (make-documents-pane "mars.local" $docids "reddit_corpus")))
+
+(defun make-documents-pane (url docids dbname )
+  (make-instance 'documents-pane
+                 :document-ids docids
+                 :database-name dbname
+                 :instance-url url))
 
 (defparameter *data-pane-font-size* 14)
 

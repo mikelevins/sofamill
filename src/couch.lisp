@@ -134,14 +134,15 @@
 (defun get-document-contents (couch dbname document-id
                                     &key revision revisions conflicts
                                     revision-info (if-missing nil))
-  (let ((host (get-key couch :host))
-        (port (get-key couch :port))
-        (protocol (get-key couch :protocol)))
-    (with-couch (:host host :port port
-                 :protocol protocol
-                 :name dbname)
-      (clouchdb::get-document document-id))))
+  (let* ((host (get-key couch :host))
+         (port (get-key couch :port))
+         (protocol (get-key couch :protocol))
+         (url (concatenate 'string protocol "://" host ":" port "/" dbname "/" document-id)))
+    (let ((stream (drakma:http-request url :want-stream t)))
+      (setf (flexi-streams:flexi-stream-external-format stream) :utf-8)
+      (reverse (yason:parse stream :object-as :alist)))))
 
-;;; (sofamill::put-couch "mars.local" (sofamill::couch :host "mars.local" :db-name "oppsdaily"))
+;;; (sofamill::put-couch "mars.local" (sofamill::couch :host "mars.local"))
 ;;; (sofamill::list-document-ids (get-couch "mars.local") "oppsdaily" :skip 20 :limit 10)
 ;;; (sofamill::get-document-contents (get-couch "mars.local") "oppsdaily" "b449e4da4e28616d4f59f5d5be2123ea")
+;;; (sofamill::get-document-contents (get-couch "mars.local") "reddit_corpus" "117f6fa420864c640055b3529ff8ef68")
