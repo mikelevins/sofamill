@@ -43,8 +43,11 @@
                                               (choice-selected-item (get-ids-pane intf))))))
 
 ;;; (put-couch "mars.local" (couch :host "mars.local"))
-;;; (defparameter $docids (list-document-ids (get-couch "mars.local") "oppsdaily" :skip 30 :limit 20))
-;;; (defparameter $win (capi:contain (make-instance 'documents-pane :document-ids $docids :database-name "oppsdaily" :instance-url "mars.local")))
+;;; (defparameter $docids (list-document-ids (get-couch "mars.local") "reddit_corpus" :skip (random 1000000) :limit 20))
+;;; (defparameter $win (capi:contain (make-instance 'documents-pane :document-ids $docids :database-name "reddit_corpus" :instance-url "mars.local")))
+
+(defmethod make-data-pane ((x null))
+  (make-instance 'display-pane :text ""))
 
 (defmethod make-data-pane ((x symbol))
   (make-instance 'display-pane :text (symbol-name x)))
@@ -52,7 +55,8 @@
 (defmethod make-data-pane ((x string))
   (if (< (length x) 128)
       (make-instance 'display-pane :text x)
-    (make-instance 'editor-pane :buffer-name (random-alpha-string) :text x)))
+    (make-instance 'rich-text-pane
+                   :text x)))
 
 (defmethod make-data-pane ((x number)) 
   (make-instance 'display-pane :text (format nil "~A" x)))
