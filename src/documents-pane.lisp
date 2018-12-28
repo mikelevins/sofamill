@@ -12,15 +12,20 @@
 
 (define-interface documents-pane ()
   ;; -- slots ---------------------------------------------
-  ((document-ids :reader get-document-ids :initform nil :initarg :document-ids))
+  ((instance-url :reader get-instance-url :initform nil :initarg :instance-url)
+   (database-name :reader get-database-name :initform nil :initarg :database-name)
+   (document-ids :reader get-document-ids :initform nil :initarg :document-ids))
   ;; -- panes ---------------------------------------------
   (:panes
    (ids-pane list-panel :reader get-ids-pane
-             :items nil :visible-min-width 280)
-   (contents-pane editor-pane :reader get-contents-pane
-                  :text "<placeholder text>"))
+             :items nil :visible-min-width 280
+             :callback-type :interface-item
+             :selection-callback 'handle-select-document-id)
+   (contents-pane editor-pane :text "" :reader get-contents-pane
+                  :buffer-name "SofaMill Document Contents"))
   ;; -- layouts ---------------------------------------------
   (:layouts
+   
    (main-layout row-layout '(ids-pane contents-pane)
                 :ratios '(nil 1)))
   ;; -- default ---------------------------------------------
@@ -33,4 +38,12 @@
 
 ;;; (put-couch "mars.local" (couch :host "mars.local"))
 ;;; (defparameter $docids (list-document-ids (get-couch "mars.local") "oppsdaily" :skip 20 :limit 10))
-;;; (defparameter $win (capi:contain (make-instance 'documents-pane :document-ids $docids)))
+;;; (defparameter $win (capi:contain (make-instance 'documents-pane :document-ids $docids :database-name "oppsdaily" :instance-url "mars.local")))
+
+(defun handle-select-document-id (interface item)
+  (let* ((contents (get-document-contents (get-couch (get-instance-url interface))
+                                          (get-database-name interface)
+                                          item))
+         (contents-string (format nil "~S" contents)))
+    (setf (editor-pane-text (get-contents-pane interface))
+          contents-string)))

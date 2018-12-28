@@ -70,7 +70,3 @@
                       (couch key val))))
     (put-couch namestring new-couch)))
 
-#|
-(add-couch "localhost" :host "localhost")
-(add-couch "mars.local" :host "mars.local" :db-name "oppsdaily")
-|#
