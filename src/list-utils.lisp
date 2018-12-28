@@ -10,7 +10,9 @@
 
 (in-package #:sofamill)
 
+;;; --------------------------------------------------
 ;;; alist utils
+;;; --------------------------------------------------
 
 (defmethod alist-contains-key? ((c null) key) nil)
 
@@ -36,3 +38,18 @@
 
 (defmethod alist-vals ((c cons)) 
   (mapcar #'cdr c))
+
+;;; --------------------------------------------------
+;;; plist utils
+;;; --------------------------------------------------
+
+(defmethod alist->plist ((alist null)) nil)
+
+(defmethod alist->plist ((alist cons)) 
+  (let* ((head (car alist))
+         (tail (cdr alist))
+         (key (car head))
+         (val (cdr head)))
+    (cons key
+          (cons val 
+                (alist->plist tail)))))

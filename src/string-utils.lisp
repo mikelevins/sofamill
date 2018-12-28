@@ -20,6 +20,13 @@
                     :start1 0 :end1 prefix-length
                     :start2 0 :end2 prefix-length))))
 
+(defun random-alpha-string (&optional (count 16))
+  (let* ((buf (make-array 16 :adjustable t :fill-pointer 0))
+         (alphabet "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+         (len (length alphabet)))
+    (loop for i from 0 below count do (vector-push-extend (elt alphabet (random len)) buf))
+    (coerce buf 'string)))
+
 (defmethod take ((n integer)(s string) &key (start 0))
   (subseq s start (+ start n)))
 

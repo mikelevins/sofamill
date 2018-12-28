@@ -18,32 +18,69 @@
   ;; -- panes ---------------------------------------------
   (:panes
    (ids-pane list-panel :reader get-ids-pane
-             :items nil :visible-min-width 280
+             :items nil 
+             :visible-min-width 280
+             :visible-min-height 200
              :callback-type :interface-item
+             :interaction :single-selection
              :selection-callback 'handle-select-document-id)
    (contents-pane editor-pane :text "" :reader get-contents-pane
                   :buffer-name "SofaMill Document Contents"))
   ;; -- layouts ---------------------------------------------
   (:layouts
-   
-   (main-layout row-layout '(ids-pane contents-pane)
+   (contents-layout grid-layout '() :reader get-contents-layout :columns 2
+                    :background :white)
+   (main-layout row-layout '(ids-pane contents-layout)
                 :ratios '(nil 1)))
   ;; -- default ---------------------------------------------
   (:default-initargs :layout 'main-layout
-    :initial-focus 'main-layout
-    :title "Documents"
-    :create-callback (lambda (intf)
-                       (setf (collection-items (get-ids-pane intf))
-                             (get-document-ids intf)))))
+   :initial-focus 'main-layout
+   :title "Documents"
+   :create-callback (lambda (intf)
+                      (setf (collection-items (get-ids-pane intf))
+                            (get-document-ids intf))
+                      (update-contents-layout intf
+                                              (choice-selected-item (get-ids-pane intf))))))
 
 ;;; (put-couch "mars.local" (couch :host "mars.local"))
-;;; (defparameter $docids (list-document-ids (get-couch "mars.local") "oppsdaily" :skip 20 :limit 10))
+;;; (defparameter $docids (list-document-ids (get-couch "mars.local") "oppsdaily" :skip 30 :limit 20))
 ;;; (defparameter $win (capi:contain (make-instance 'documents-pane :document-ids $docids :database-name "oppsdaily" :instance-url "mars.local")))
 
+(defmethod make-data-pane ((x symbol))
+  (make-instance 'display-pane :text (symbol-name x)))
+
+(defmethod make-data-pane ((x string))
+  (if (< (length x) 128)
+      (make-instance 'display-pane :text x)
+    (make-instance 'editor-pane :buffer-name (random-alpha-string) :text x)))
+
+(defmethod make-data-pane ((x number)) 
+  (make-instance 'display-pane :text (format nil "~A" x)))
+
 (defun handle-select-document-id (interface item)
-  (let* ((contents (get-document-contents (get-couch (get-instance-url interface))
-                                          (get-database-name interface)
-                                          item))
-         (contents-string (format nil "~S" contents)))
-    (setf (editor-pane-text (get-contents-pane interface))
-          contents-string)))
+  (update-contents-layout interface item))
+
+(defun update-contents-layout (intf selected-item)
+  (let* ((item (choice-selected-item (get-ids-pane intf)))
+         (contents (alist->plist (get-document-contents (get-couch (get-instance-url intf))
+                                                        (get-database-name intf)
+                                                        selected-item)))
+         (contents-panes (mapcar 'make-data-pane contents)))
+    (setf (layout-description (get-contents-layout intf))
+          contents-panes)))
+
+
+#| create-callback
+(let ((item (choice-selected-item (get-ids-pane intf))))
+                        (setf (layout-description (get-contents-layout intf))
+                              (get-document-contents (get-couch (get-instance-url intf))
+                                                     (get-database-name intf)
+                                                     item)))
+|#
+
+#| handle-select-document-id
+(setf (layout-description (get-contents-layout interface))
+        (get-document-contents (get-couch (get-instance-url interface))
+                               (get-database-name interface)
+                               item))
+|#
