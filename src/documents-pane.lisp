@@ -55,8 +55,13 @@
 (defmethod make-data-pane ((x string))
   (if (< (length x) 128)
       (make-instance 'display-pane :text x)
-    (make-instance 'rich-text-pane
-                   :text x)))
+    (make-instance 'display-pane :text x
+                   :visible-min-width 280
+                   :visible-max-width 400
+                   :visible-min-height 200
+                   :visible-max-height 400
+                   :horizontal-scroll t
+                   :vertical-scroll t)))
 
 (defmethod make-data-pane ((x number)) 
   (make-instance 'display-pane :text (format nil "~A" x)))
