@@ -13,8 +13,7 @@
 (defparameter *sofamill* nil)
 
 (defparameter *initial-state*
-  (finite-map
-   :couches (empty-map)))
+  (wb-map :couches (empty-map)))
 
 (defclass sofamill ()
   ((state :accessor state :initform *initial-state* :initarg :state)))
@@ -37,7 +36,7 @@
 (defmethod update-state ((key symbol) val)
   (let* ((old-state (state (sofamill)))
          (new-state (merge-keys old-state
-                                (finite-map key val))))
+                                (wb-map key val))))
     (setf (state (sofamill))
           new-state)))
 
@@ -61,7 +60,7 @@
 (defun put-couch (namestring new-couch)
   (let* ((old-couches (couches))
          (new-couches (merge-keys old-couches
-                                  (finite-map namestring new-couch))))
+                                  (wb-map namestring new-couch))))
     (update-state :couches new-couches)))
 
 (defmethod update-couch (namestring key val)

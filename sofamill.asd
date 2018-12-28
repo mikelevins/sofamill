@@ -25,6 +25,7 @@
 
 ;;; (sofamill::put-couch "localhost" (sofamill::couch :host "localhost"))
 ;;; (sofamill::put-couch "mars.local" (sofamill::couch :host "mars.local"))
+;;; (sofamill::put-couch "db.delect.us" (sofamill::couch :host "db.delect.us" :port ""))
 
 ;;; (sofamill::update-couch "mars.local" :name "reddit_corpus")
 ;;; (sofamill::update-couch "mars.local" :protocol "https")

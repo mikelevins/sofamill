@@ -33,12 +33,12 @@
               (protocol *default-protocol*)
               (user *default-user*)
               (password *default-password*))
-  (finite-map :host host
-              :port port
-              :name db-name
-              :protocol protocol
-              :user user
-              :password password))
+  (wb-map :host host
+          :port port
+          :name db-name
+          :protocol protocol
+          :user user
+          :password password))
 
 (defun make-default-couch () (couch))
 

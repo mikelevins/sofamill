@@ -18,7 +18,7 @@
 
 (defun empty-map () (fset:empty-map))
 
-(defun finite-map (&rest args)
+(defun wb-map (&rest args)
   (fset:convert 'fset:wb-map
                 (loop for tail on args by #'cddr
                       collect (cons (car tail)
@@ -52,3 +52,20 @@
 
 (defmethod remove-key ((m fset:map) key &key &allow-other-keys)
   (fset:less m key))
+
+;;; redefine print-wb-map to be less cluttered
+
+(defun fset::print-wb-map (map stream level)
+  (declare (ignore level))
+  (let ((past-the-first-pair nil))
+    (pprint-logical-block (stream nil :prefix "{")
+      (fset::do-map (x y map)
+        (pprint-pop)
+        (when past-the-first-pair
+          (write-char #\Space stream))
+        (pprint-newline :linear stream)
+        (write x :stream stream)
+        (write-char #\Space stream)
+        (write y :stream stream)
+        (setf past-the-first-pair t))
+      (format stream "}"))))
