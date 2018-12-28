@@ -10,6 +10,8 @@
 
 (in-package #:sofamill)
 
+(defparameter *ids-pane-font-size* 14)
+
 (define-interface documents-pane ()
   ;; -- slots ---------------------------------------------
   ((instance-url :reader get-instance-url :initform nil :initarg :instance-url)
@@ -19,6 +21,7 @@
   (:panes
    (ids-pane list-panel :reader get-ids-pane
              :items nil 
+             :font (gp:make-font-description :size *ids-pane-font-size*)
              :visible-min-width 280
              :visible-min-height 200
              :callback-type :interface-item
@@ -46,16 +49,22 @@
 ;;; (defparameter $docids (list-document-ids (get-couch "mars.local") "reddit_corpus" :skip (random 1000000) :limit 20))
 ;;; (defparameter $win (capi:contain (make-instance 'documents-pane :document-ids $docids :database-name "reddit_corpus" :instance-url "mars.local")))
 
+(defparameter *data-pane-font-size* 14)
+
 (defmethod make-data-pane ((x null))
-  (make-instance 'display-pane :text ""))
+  (make-instance 'display-pane :text "" 
+                 :font (gp:make-font-description :size *data-pane-font-size*)))
 
 (defmethod make-data-pane ((x symbol))
-  (make-instance 'display-pane :text (symbol-name x)))
+  (make-instance 'display-pane :text (symbol-name x) 
+                 :font (gp:make-font-description :size *data-pane-font-size*)))
 
 (defmethod make-data-pane ((x string))
   (if (< (length x) 128)
-      (make-instance 'display-pane :text x)
+      (make-instance 'display-pane :text x
+                     :font (gp:make-font-description :size *data-pane-font-size*))
     (make-instance 'display-pane :text x
+                   :font (gp:make-font-description :size *data-pane-font-size*)
                    :visible-min-width 280
                    :visible-max-width 400
                    :visible-min-height 200
@@ -64,7 +73,8 @@
                    :vertical-scroll t)))
 
 (defmethod make-data-pane ((x number)) 
-  (make-instance 'display-pane :text (format nil "~A" x)))
+  (make-instance 'display-pane :text (format nil "~A" x) 
+                 :font (gp:make-font-description :size *data-pane-font-size*)))
 
 (defun handle-select-document-id (interface item)
   (update-contents-layout interface item))
