@@ -47,7 +47,7 @@
 
 ;;; (put-couch "mars.local" (couch :host "mars.local"))
 ;;; (defparameter $couch (get-couch "mars.local"))
-;;; (defparameter $docids (list-document-ids $couch "reddit_corpus" :skip 1000 :limit 40))
+;;; (defparameter $docids (list-document-ids $couch "reddit_corpus" :skip 1200 :limit 100))
 ;;; (defparameter $win (capi:contain (make-documents-pane "mars.local" $docids "reddit_corpus")))
 
 (defun make-documents-pane (url docids dbname )
@@ -87,9 +87,9 @@
   (update-contents-layout interface item))
 
 (defun update-contents-layout (intf selected-item)
-  (let* ((contents (alist->plist (get-document-contents (get-couch (get-instance-url intf))
-                                                        (get-database-name intf)
-                                                        selected-item)))
+  (let* ((contents (alist->plist (get-document (get-couch (get-instance-url intf))
+                                               (get-database-name intf)
+                                               selected-item)))
          (contents-panes (mapcar 'make-data-pane contents)))
     (setf (layout-description (get-contents-layout intf))
           contents-panes)))

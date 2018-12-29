@@ -53,6 +53,10 @@
         (simple-error (err)
           nil)))))
 
+;;; (sofamill::probe-couch (sofamill::couch :host "localhost"))
+;;; (sofamill::probe-couch (sofamill::couch :host "mars.local"))
+;;; (sofamill::probe-couch (sofamill::couch :host "db.delect.us" :port ""))
+
 (defun list-databases (couch)
   (let ((host (get-key couch :host))
         (port (get-key couch :port))
@@ -122,27 +126,22 @@
          (rows (alist-get-key records :|rows|)))
     (alist-vals (mapcar #'car rows))))
 
-;;; BUG: when clouchdb::get-document fetches a document that contains
-;;;      a German eszett (unicode #x00DF), it returns it as unicode
-;;;      #x009F, which is a control character. I see the same thing if
-;;;      I bypass clouchdb and fetch the same document by calling
-;;;      drakma's http-request directly, then convert the returned
-;;;      vector of bytes to characters by mapping code-char over them.
-;;;      Presumably there is some encoding-related issue that arises
-;;;      from the encoding that drakma assumes or requests.
-
-(defun get-document-contents (couch dbname document-id
-                                    &key revision revisions conflicts
-                                    revision-info (if-missing nil))
+(defmethod get-document ((couch fset:wb-map) (dbname string) (document-id string)
+                         &key revision revisions conflicts
+                         revision-info (if-missing nil))
   (let* ((host (get-key couch :host))
          (port (get-key couch :port))
          (protocol (get-key couch :protocol))
-         (url (concatenate 'string protocol "://" host ":" port "/" dbname "/" document-id)))
+         (url (url-string protocol "://" host ":" port "/" dbname "/" document-id)))
     (let ((stream (drakma:http-request url :want-stream t)))
       (setf (flexi-streams:flexi-stream-external-format stream) :utf-8)
       (reverse (yason:parse stream :object-as :alist)))))
 
 ;;; (sofamill::put-couch "mars.local" (sofamill::couch :host "mars.local"))
 ;;; (sofamill::list-document-ids (get-couch "mars.local") "oppsdaily" :skip 20 :limit 10)
-;;; (sofamill::get-document-contents (get-couch "mars.local") "oppsdaily" "b449e4da4e28616d4f59f5d5be2123ea")
-;;; (sofamill::get-document-contents (get-couch "mars.local") "reddit_corpus" "117f6fa420864c640055b3529ff8ef68")
+;;; (sofamill::get-document (get-couch "mars.local") "oppsdaily" "b449e4da4e28616d4f59f5d5be2123ea")
+;;; (sofamill::get-document (get-couch "mars.local") "reddit_corpus" "117f6fa420864c640055b3529ff8ef68")
+
+;;; this one fails when a local couch isn't running
+;;; (sofamill::put-couch "localhost" (sofamill::couch :host "localhost"))
+;;; (sofamill::get-document (get-couch "localhost") "oppsdaily" "b449e4da4e28616d4f59f5d5be2123ea")
